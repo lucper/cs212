@@ -48,7 +48,10 @@ def kind(n, ranks):
     return None
 
 def two_pair(ranks):
-    pass
+    res = {r for r in ranks if ranks.count(r) == 2}
+    if len(res) == 2:
+        return max(res), min(res)
+    return None
 
 def card_ranks(hand):
     "Return ranks of a hand: card_ranks([...]) => 1..13 (2,..,10,A,K,Q,J)"
@@ -95,8 +98,8 @@ def test():
     assert kind(3, fkranks) == None
     assert kind(2, fkranks) == None
     assert kind(1, fkranks) == 7
-    assert two_pair(4, fkranks) == None
-    assert two_pair(4, tpranks) == (9, 5)
+    assert two_pair(fkranks) == None
+    assert two_pair(tpranks) == (9, 5)
     assert straight([9, 8, 7, 6, 5]) == True
     assert straight([9, 8, 8, 6, 5]) == False
     assert flush(straight_flush) == True
@@ -106,7 +109,7 @@ def test():
     assert card_ranks(full_house) == [10, 10, 10, 7, 7]
     assert poker([four_kind]) == four_kind
     assert poker([full_house, full_house]) == full_house
-    assert poker([four_kind, full_house]) == full_house
+    assert poker([four_kind, full_house]) == four_kind
     assert poker([straight_flush, four_kind, full_house]) == straight_flush
     assert poker([straight_flush] + 99 * [full_house]) == straight_flush
     assert hand_rank(straight_flush) == (8, 10)
