@@ -55,7 +55,7 @@ def two_pair(ranks):
 
 def card_ranks(hand):
     "Return ranks of a hand: card_ranks([...]) => 1..13 (2,..,10,A,K,Q,J)"
-    ranks = ['--23456789TJQKA'.index(r) for r, s in hand]
+    ranks = ['-A23456789TJQK-'.index(r) for r, s in hand]
     ranks.sort(reverse=True)
     return ranks
 
