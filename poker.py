@@ -28,17 +28,24 @@
 ## rank 0 = all random
 ##  (0, [all ranks])
 
-def straight(hand):
+def straight(ranks):
     "Check whether the ranks are consecutive"
-    pass
+    return all(a < b for a, b in zip(sorted(ranks), sorted(ranks)[1:]))
 
 def flush(hand):
     "Check whether all suits are the same"
-    pass
+    #if len(hand) == 1:
+    #    return hand[0][1]
+    #else:
+    #    return hand[0][1] == flush(hand[1:])
+    return len(set([s for r, s in hand])) == 1
 
 def kind(n, ranks):
     "Check whether there are n repeated items in ranks; return the rank if true, otherwise False"
-    pass
+    for r in ranks:
+        if ranks.count(r) == n:
+            return r
+    return None
 
 def two_pair(ranks):
     pass
@@ -81,6 +88,19 @@ def test():
     straight_flush = ['6C', '7C', '8C', '9C', 'TC']
     four_kind = ['9D', '9H', '9S', '9C', '7D']
     full_house = ['TD', 'TC', 'TH', '7C', '7D']
+    two_pairs = ['5S', '5D', '9H', '9C', '6S']
+    fkranks = card_ranks(four_kind)
+    tpranks = card_ranks(two_pairs)
+    assert kind(4, fkranks) == 9
+    assert kind(3, fkranks) == None
+    assert kind(2, fkranks) == None
+    assert kind(1, fkranks) == 7
+    assert two_pair(4, fkranks) == None
+    assert two_pair(4, tpranks) == (9, 5)
+    assert straight([9, 8, 7, 6, 5]) == True
+    assert straight([9, 8, 8, 6, 5]) == False
+    assert flush(straight_flush) == True
+    assert flush(four_kind) == False
     assert card_ranks(straight_flush) == [10, 9, 8, 7, 6]
     assert card_ranks(four_kind) == [9, 9, 9, 9, 7]
     assert card_ranks(full_house) == [10, 10, 10, 7, 7]
@@ -88,7 +108,7 @@ def test():
     assert poker([full_house, full_house]) == full_house
     assert poker([four_kind, full_house]) == full_house
     assert poker([straight_flush, four_kind, full_house]) == straight_flush
-    assert poker([sf] + 99 * [fh]) == sf
+    assert poker([straight_flush] + 99 * [full_house]) == straight_flush
     assert hand_rank(straight_flush) == (8, 10)
     assert hand_rank(four_kind) == (7, 9, 7)
     assert hand_rank(full_house) == (6, 10, 7)
