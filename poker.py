@@ -40,9 +40,14 @@ def kind(n, ranks):
     "Check whether there are n repeated items in ranks; return the rank if true, otherwise False"
     pass
 
+def two_pair(ranks):
+    pass
+
 def card_ranks(hand):
     "Return ranks of a hand: card_ranks([...]) => 1..13 (2,..,10,A,K,Q,J)"
-    return None
+    ranks = ['--23456789TJQKA'.index(r) for r, s in hand]
+    ranks.sort(reverse=True)
+    return ranks
 
 def hand_rank(hand):
     "Return integer indicating rank of a hand: hand_rank([...]) => 0..8"
@@ -51,7 +56,20 @@ def hand_rank(hand):
         return (8, max(ranks))
     elif kind(4, ranks):
         return (7, kind(4, ranks), kind(1, ranks))
-    ## continue
+    elif kind(3, ranks) and kind(2, ranks):
+        return (6, kind(3, ranks), kind(2, ranks))
+    elif flush(hand):
+        return (5, ranks)
+    elif straight(ranks):
+        return (4, max(ranks))
+    elif kind(3, ranks):
+        return (3, kind(3, ranks), ranks)
+    elif two_pair(ranks):
+        return (2, two_pair(ranks))
+    elif kind(2, ranks):
+        return (1, kind(2, ranks), ranks)
+    else:
+        return (0, ranks)
 
 def poker(hands):
     "Return the best hand: poker([hand,...]) => hand"
@@ -63,6 +81,9 @@ def test():
     straight_flush = ['6C', '7C', '8C', '9C', 'TC']
     four_kind = ['9D', '9H', '9S', '9C', '7D']
     full_house = ['TD', 'TC', 'TH', '7C', '7D']
+    assert card_ranks(straight_flush) == [10, 9, 8, 7, 6]
+    assert card_ranks(four_kind) == [9, 9, 9, 9, 7]
+    assert card_ranks(full_house) == [10, 10, 10, 7, 7]
     assert poker([four_kind]) == four_kind
     assert poker([full_house, full_house]) == full_house
     assert poker([four_kind, full_house]) == full_house
