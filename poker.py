@@ -28,8 +28,30 @@
 ## rank 0 = all random
 ##  (0, [all ranks])
 
-def hand_rank(hand):
+def straight(hand):
+    "Check whether the ranks are consecutive"
+    pass
+
+def flush(hand):
+    "Check whether all suits are the same"
+    pass
+
+def kind(n, ranks):
+    "Check whether there are n repeated items in ranks; return the rank if true, otherwise False"
+    pass
+
+def card_ranks(hand):
+    "Return ranks of a hand: card_ranks([...]) => 1..13 (2,..,10,A,K,Q,J)"
     return None
+
+def hand_rank(hand):
+    "Return integer indicating rank of a hand: hand_rank([...]) => 0..8"
+    ranks = card_ranks(hand)
+    if straight(ranks) and flush(hand):
+        return (8, max(ranks))
+    elif kind(4, ranks):
+        return (7, kind(4, ranks), kind(1, ranks))
+    ## continue
 
 def poker(hands):
     "Return the best hand: poker([hand,...]) => hand"
@@ -46,6 +68,9 @@ def test():
     assert poker([four_kind, full_house]) == full_house
     assert poker([straight_flush, four_kind, full_house]) == straight_flush
     assert poker([sf] + 99 * [fh]) == sf
+    assert hand_rank(straight_flush) == (8, 10)
+    assert hand_rank(four_kind) == (7, 9, 7)
+    assert hand_rank(full_house) == (6, 10, 7)
     return "tests pass"
 print(test())
 ##########
