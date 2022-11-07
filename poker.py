@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import random
+
 ## A 'card' has a rank (A,K,Q,J,2,...,10) and a suit (spades, hearts, diamonds, clubs)
 ##   '<rank><suit>'
 ## A 'hand' is a list of 5 cards
@@ -88,3 +90,11 @@ def allmax(iterable, key=(lambda k: k)):
 def poker(hands):
     "Return the best hands: poker([hand,...]) => [hand,...]"
     return allmax(hands, key=hand_rank)
+
+def deal(numhands, n=5, deck=[r+s for r in '23456789TJQKA' for s in 'SHDC']):
+    hands = []
+    random.shuffle(deck)
+    for _ in range(numhands):
+        hands.append(deck[:n])
+        deck = deck[n:]
+    return hands
