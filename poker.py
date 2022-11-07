@@ -92,9 +92,5 @@ def poker(hands):
     return allmax(hands, key=hand_rank)
 
 def deal(numhands, n=5, deck=[r+s for r in '23456789TJQKA' for s in 'SHDC']):
-    hands = []
     random.shuffle(deck)
-    for _ in range(numhands):
-        hands.append(deck[:n])
-        deck = deck[n:]
-    return hands
+    return [deck[n*i:n*(i+1)] for i in range(numhands)]
