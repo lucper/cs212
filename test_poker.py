@@ -42,11 +42,6 @@ def test_flush(sf, fk):
     assert flush(sf) == True
     assert flush(fk) == False
 
-def test_card_ranks(sf, fk, fh):
-    assert card_ranks(sf) == [10, 9, 8, 7, 6]
-    assert card_ranks(fk) == [9, 9, 9, 9, 7]
-    assert card_ranks(fh) == [10, 10, 10, 7, 7]
-
 def test_poker(fk, fh, sf):
     assert poker([fk]) == [fk]
     assert poker([fh, fh]) == [fh, fh]
