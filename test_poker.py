@@ -32,7 +32,7 @@ def test_2straight_beats_Ahigh():
     s2 = ['2C', '3C', '4C', '5S', '6S'] # 2-6 straight
     ah = ['AS', '2S', '3S', '4S', '6C'] # A high
     sh = ['2S', '3S', '4S', '6C', '7D'] # 7 high
-    assert poker([s1, s2, ah, sh]) == s2
+    assert poker([s1, s2, ah, sh]) == [s2]
 
 def test_kind(fkranks, tpranks):
     assert kind(4, fkranks) == 9
@@ -58,11 +58,11 @@ def test_card_ranks(sf, fk, fh):
     assert card_ranks(fh) == [10, 10, 10, 7, 7]
 
 def test_poker(fk, fh, sf):
-    assert poker([fk]) == fk
-    assert poker([fh, fh]) == fh
-    assert poker([fk, fh]) == fk
-    assert poker([sf, fk, fh]) == sf
-    assert poker([sf] + 99 * [fh]) == sf
+    assert poker([fk]) == [fk]
+    assert poker([fh, fh]) == [fh, fh]
+    assert poker([fk, fh]) == [fk]
+    assert poker([sf, fk, fh]) == [sf]
+    assert poker([sf] + 99 * [fh]) == [sf]
 
 def test_hand_rank(sf, fk, fh):
     assert hand_rank(sf) == (8, 10)
