@@ -30,7 +30,7 @@
 
 def straight(ranks):
     "Check whether the ranks are consecutive"
-    return all(a < b for a, b in zip(sorted(ranks), sorted(ranks)[1:]))
+    return all(a < b and b - a == 1 for a, b in zip(sorted(ranks), sorted(ranks)[1:]))
 
 def flush(hand):
     "Check whether all suits are the same"
@@ -58,6 +58,7 @@ def card_ranks(hand):
     ranks = ['-A23456789TJQK-'.index(r) for r, s in hand]
     ranks.sort(reverse=True)
     return ranks
+    #return ranks[1:] + [1] if ranks[0] == 14 else ranks
 
 def hand_rank(hand):
     "Return integer indicating rank of a hand: hand_rank([...]) => 0..8"
@@ -88,33 +89,41 @@ def poker(hands):
 ## tests ##
 def test():
     "Test cases"
-    straight_flush = ['6C', '7C', '8C', '9C', 'TC']
-    four_kind = ['9D', '9H', '9S', '9C', '7D']
-    full_house = ['TD', 'TC', 'TH', '7C', '7D']
-    two_pairs = ['5S', '5D', '9H', '9C', '6S']
-    fkranks = card_ranks(four_kind)
-    tpranks = card_ranks(two_pairs)
+    sf = ['6C', '7C', '8C', '9C', 'TC']
+    fk = ['9D', '9H', '9S', '9C', '7D']
+    fh = ['TD', 'TC', 'TH', '7C', '7D']
+    tp = ['5S', '5D', '9H', '9C', '6S']
+    s1 = ['AS', '2S', '3S', '4S', '5C'] # A-5 straight
+    s2 = ['2C', '3C', '4C', '5S', '6S'] # 2-6 straight
+    ah = ['AS', '2S', '3S', '4S', '6C'] # A high
+    sh = ['2S', '3S', '4S', '6C', '7D'] # 7 high
+
+    assert poker([s1, s2, ah, sh]) == s2
+    
+    fkranks = card_ranks(fk)
+    tpranks = card_ranks(tp)
     assert kind(4, fkranks) == 9
     assert kind(3, fkranks) == None
     assert kind(2, fkranks) == None
     assert kind(1, fkranks) == 7
     assert two_pair(fkranks) == None
     assert two_pair(tpranks) == (9, 5)
+    
     assert straight([9, 8, 7, 6, 5]) == True
     assert straight([9, 8, 8, 6, 5]) == False
-    assert flush(straight_flush) == True
-    assert flush(four_kind) == False
-    assert card_ranks(straight_flush) == [10, 9, 8, 7, 6]
-    assert card_ranks(four_kind) == [9, 9, 9, 9, 7]
-    assert card_ranks(full_house) == [10, 10, 10, 7, 7]
-    assert poker([four_kind]) == four_kind
-    assert poker([full_house, full_house]) == full_house
-    assert poker([four_kind, full_house]) == four_kind
-    assert poker([straight_flush, four_kind, full_house]) == straight_flush
-    assert poker([straight_flush] + 99 * [full_house]) == straight_flush
-    assert hand_rank(straight_flush) == (8, 10)
-    assert hand_rank(four_kind) == (7, 9, 7)
-    assert hand_rank(full_house) == (6, 10, 7)
+    assert flush(sf) == True
+    assert flush(fk) == False
+    assert card_ranks(sf) == [10, 9, 8, 7, 6]
+    assert card_ranks(fk) == [9, 9, 9, 9, 7]
+    assert card_ranks(fh) == [10, 10, 10, 7, 7]
+    assert poker([fk]) == fk
+    assert poker([fh, fh]) == fh
+    assert poker([fk, fh]) == fk
+    assert poker([sf, fk, fh]) == sf
+    assert poker([sf] + 99 * [fh]) == sf
+    assert hand_rank(sf) == (8, 10)
+    assert hand_rank(fk) == (7, 9, 7)
+    assert hand_rank(fh) == (6, 10, 7)
     return "tests pass"
 print(test())
 ##########
