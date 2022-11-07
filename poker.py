@@ -67,26 +67,18 @@ def group(items):
     return sorted(groups, reverse=True)
 
 def hand_rank(hand):
-    "Return integer indicating rank of a hand: hand_rank([...]) => 0..8"
-    ranks = card_ranks(hand)
-    if straight(ranks) and flush(hand):
-        return (8, max(ranks))
-    elif kind(4, ranks):
-        return (7, kind(4, ranks), kind(1, ranks))
-    elif kind(3, ranks) and kind(2, ranks):
-        return (6, kind(3, ranks), kind(2, ranks))
-    elif flush(hand):
-        return (5, ranks)
-    elif straight(ranks):
-        return (4, max(ranks))
-    elif kind(3, ranks):
-        return (3, kind(3, ranks), ranks)
-    elif two_pair(ranks):
-        return (2, two_pair(ranks))
-    elif kind(2, ranks):
-        return (1, kind(2, ranks), ranks)
-    else:
-        return (0, ranks)
+    groups = group(['-A23456789TJQK-'.index(r) for r, _ in hand])
+    counts, ranks = zip(*groups)
+    return (9 if (5,) == counts else
+            8 if straight(ranks) and flush(hand) else
+            7 if (4,1) == counts else
+            6 if (3,2) == counts else
+            5 if flush(hand) else
+            4 if straight(ranks) else
+            3 if (3,1,1) == counts else
+            2 if (2,2,1) == counts else
+            1 if (2,1,1,1) == counts else
+            0), ranks
 
 def allmax(iterable, key=(lambda k: k)):
     return [i for i in iterable if key(i) == key(max(iterable, key=key))]
