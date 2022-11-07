@@ -62,6 +62,10 @@ def card_ranks(hand):
     return ranks
     #return ranks[1:] + [1] if ranks[0] == 14 else ranks
 
+def group(items):
+    groups = [(items.count(x), x) for x in set(items)]
+    return sorted(groups, reverse=True)
+
 def hand_rank(hand):
     "Return integer indicating rank of a hand: hand_rank([...]) => 0..8"
     ranks = card_ranks(hand)
