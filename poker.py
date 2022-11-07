@@ -10,25 +10,6 @@ def flush(hand):
     "Check whether all suits are the same"
     return len(set([s for r, s in hand])) == 1
 
-def kind(n, ranks):
-    "Check whether there are n repeated items in ranks; return the rank if true, otherwise False"
-    for r in ranks:
-        if ranks.count(r) == n:
-            return r
-    return None
-
-def two_pair(ranks):
-    res = {r for r in ranks if ranks.count(r) == 2}
-    if len(res) == 2:
-        return max(res), min(res)
-    return None
-
-def card_ranks(hand):
-    "Return ranks of a hand: card_ranks([...]) => 1..13 (2,..,10,A,K,Q,J)"
-    ranks = ['-A23456789TJQK-'.index(r) for r, s in hand]
-    ranks.sort(reverse=True)
-    return ranks
-
 def group(items):
     groups = [(items.count(x), x) for x in set(items)]
     return sorted(groups, reverse=True)
@@ -45,7 +26,7 @@ def hand_rank(hand):
             3 if (3,1,1) == counts else
             2 if (2,2,1) == counts else
             1 if (2,1,1,1) == counts else
-            0), *set(ranks) # to pass tests :p
+            0), *ranks
 
 def allmax(iterable, key=(lambda k: k)):
     return [i for i in iterable if key(i) == key(max(iterable, key=key))]
