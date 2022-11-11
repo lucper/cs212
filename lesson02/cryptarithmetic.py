@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 import re
+import string
+import itertools
 
 def valid(formula):
     try:
@@ -12,4 +14,9 @@ def solve(formula):
     return next(assign for assign in fill_in(formula) if valid(assign))
 
 def fill_in(formula):
-    pass
+    # could be k for k in formula if k in string.ascii_letters
+    letters = ''.join(set(re.findall('[a-zA-Z]', formula)))
+    for digits in itertools.permutations('0123456789', len(letters)):
+        table = string.maketrans(letters, ''.join(digits))
+        yield formula.translate(table)
+
