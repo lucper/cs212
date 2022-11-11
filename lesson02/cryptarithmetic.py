@@ -11,6 +11,7 @@ def valid(formula):
         return False
 
 def solve(formula):
+    # change to print or return list to get all possible assignments
     return next(assign for assign in fill_in(formula) if valid(assign))
 
 def fill_in(formula):
