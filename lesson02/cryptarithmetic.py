@@ -12,7 +12,7 @@ def valid(formula):
 
 def fill_in(formula):
     # could be k for k in formula if k in string.ascii_letters
-    letters = ''.join(set(re.findall('[a-zA-Z]', formula)))
+    letters = ''.join(set(re.findall(r'[a-zA-Z]', formula)))
     for digits in itertools.permutations('0123456789', len(letters)):
         table = str.maketrans(letters, ''.join(digits))
         yield formula.translate(table)
@@ -33,14 +33,14 @@ def compile_formula(formula, verbose=False):
     # e.g. AB+CB==AC => lambda A, B, C: (1*B + 10*A) + (1*B + 10*C) == (1*C + 10*A)
 
     # construct parameters of lambda
-    letters = ''.join(set(re.findall('[A-Z]', formula)))
+    letters = ''.join(set(re.findall(r'[A-Z]', formula)))
     params = ', '.join(letters)
 
     # construct body of lambda
     ## capturing parentheses makes pattern to be returned
     ## ex. 'e+r=a' => ['', 'e', '+', 'r', '=', 'a', '']
     ## instead of 'e+r=a' => ['', '+', '=', '']
-    body = ''.join(compile_word(word) for word in re.split('([A-Z]+)', formula))
+    body = ''.join(compile_word(word) for word in re.split(r'([A-Z]+)', formula))
 
     fn = f'(lambda {params}: {body})'
     if verbose:
