@@ -27,3 +27,22 @@ def compile_word(word):
     # notice that isupper() evaluates to False for characters such as '+' and empty string ''
     return '(' + '+'.join(f'{10**i}*{ch}' for i, ch in enumerate(reversed(word))) + ')' \
             if word.isupper() else word
+
+def compile_formula(formula, verbose=False):
+    # compiles a formula into a anonymous function
+    # e.g. AB+CB==AC => lambda A, B, C: (1*B + 10*A) + (1*B + 10*C) == (1*C + 10*A)
+
+    # construct parameters of lambda
+    letters = ''.join(set(re.findall('[A-Z]', formula)))
+    params = ', '.join(letters)
+
+    # construct body of lambda
+    ## capturing parentheses makes pattern to be returned
+    ## ex. 'e+r=a' => ['', 'e', '+', 'r', '=', 'a', '']
+    ## instead of 'e+r=a' => ['', '+', '=', '']
+    body = ''.join(compile_word(word) for word in re.split('([A-Z]+)', formula))
+
+    fn = f'(lambda {params}: {body})'
+    if verbose:
+        print(fn)
+    return eval(fn), letters
