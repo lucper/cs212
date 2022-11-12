@@ -46,3 +46,13 @@ def compile_formula(formula, verbose=False):
     if verbose:
         print(fn)
     return eval(fn), letters
+
+def faster_solve(formula):
+    fn, letters = compile_formula(formula)
+    for digits in itertools.permutations(range(10), len(letters)):
+        try:
+            if fn(*digits):
+                table = string.maketrans(letters, ''.join(str(i) for i in digits))
+                return formula.translate(table)
+        except ArithmeticError:
+                pass
