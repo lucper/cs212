@@ -10,10 +10,6 @@ def valid(formula):
     except ArithmeticError:
         return False
 
-def solve(formula):
-    # change to print or return list to get all possible assignments
-    return next(assign for assign in fill_in(formula) if valid(assign))
-
 def fill_in(formula):
     # could be k for k in formula if k in string.ascii_letters
     letters = ''.join(set(re.findall('[a-zA-Z]', formula)))
@@ -21,3 +17,13 @@ def fill_in(formula):
         table = string.maketrans(letters, ''.join(digits))
         yield formula.translate(table)
 
+def solve(formula):
+    # change to print or return list to get all possible assignments
+    return next(assign for assign in fill_in(formula) if valid(assign))
+
+### faster approach ###
+
+def compile_word(word):
+    # notice that isupper() evaluates to False for characters such as '+' and empty string ''
+    return '(' + '+'.join(f'{10**i}*{ch}' for i, ch in enumerate(reversed(word))) + ')' \
+            if word.isupper() else word
