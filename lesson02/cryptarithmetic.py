@@ -14,7 +14,7 @@ def fill_in(formula):
     # could be k for k in formula if k in string.ascii_letters
     letters = ''.join(set(re.findall('[a-zA-Z]', formula)))
     for digits in itertools.permutations('0123456789', len(letters)):
-        table = string.maketrans(letters, ''.join(digits))
+        table = str.maketrans(letters, ''.join(digits))
         yield formula.translate(table)
 
 def solve(formula):
@@ -52,7 +52,7 @@ def faster_solve(formula):
     for digits in itertools.permutations(range(10), len(letters)):
         try:
             if fn(*digits):
-                table = string.maketrans(letters, ''.join(str(i) for i in digits))
+                table = str.maketrans(letters, ''.join(str(i) for i in digits))
                 return formula.translate(table)
         except ArithmeticError:
                 pass
