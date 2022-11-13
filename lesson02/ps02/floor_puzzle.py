@@ -17,10 +17,10 @@ import itertools
 apartments = bottom, _, _, _, top = [0, 1, 2, 3, 4]
 
 def higher(x, y):
-    pass
+    return x - y > 0
 
 def adjacent(x, y):
-    pass
+    return abs(x - y) == 1
 
 def floor_puzzle():
     # Your code here
