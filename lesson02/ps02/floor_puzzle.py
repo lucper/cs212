@@ -23,8 +23,14 @@ def adjacent(x, y):
     return abs(x - y) == 1
 
 def floor_puzzle():
-    for Hopper, Kay, Liskov, Perlis, Ritchie in itertools.permutations(apartments):
-        if Hopper != top and Kay != bottom and Liskov != top and Liskov != bottom and higher(Perlis, Kay) and not adjacent(Ritchie, Liskov) and not adjacent(Liskov, Kay):
-            return [Hopper, Kay, Liskov, Perlis, Ritchie]
+    return next([Hopper, Kay, Liskov, Perlis, Ritchie]
+            for Hopper, Kay, Liskov, Perlis, Ritchie in itertools.permutations(apartments)
+            if Hopper != top
+            if Kay != bottom
+            if Liskov != top
+            if Liskov != bottom
+            if higher(Perlis, Kay)
+            if not adjacent(Ritchie, Liskov)
+            if not adjacent(Liskov, Kay))
 
 print(floor_puzzle())
