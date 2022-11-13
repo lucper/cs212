@@ -14,7 +14,7 @@
 
 import itertools
 
-apartments = bottom, _, _, _, top = [0, 1, 2, 3, 4]
+floors = bottom, _, _, _, top = [1, 2, 3, 4, 5]
 
 def higher(x, y):
     return x - y > 0
@@ -24,7 +24,7 @@ def adjacent(x, y):
 
 def floor_puzzle():
     return next([Hopper, Kay, Liskov, Perlis, Ritchie]
-            for Hopper, Kay, Liskov, Perlis, Ritchie in itertools.permutations(apartments)
+            for Hopper, Kay, Liskov, Perlis, Ritchie in itertools.permutations(floors)
             if Hopper != top
             if Kay != bottom
             if Liskov != top
