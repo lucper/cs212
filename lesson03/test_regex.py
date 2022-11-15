@@ -32,7 +32,7 @@ def test_matchhere_empty_vs_anything():
 def test_matchhere_anything_vs_empty():
     assert match_here("^a", "") == False
     assert match_here("a$", "") == False
-    assert match_here("$", "") == False
+    assert match_here("$", "") == True
     assert match_here(".", "") == False
     assert match_here("a", "") == False
     assert match_here("a?", "") == False
@@ -44,3 +44,11 @@ def test_matchhere_dot():
     assert match_here(".a", "a") == False
     assert match_here(".a", "ca") == True
     assert match_here(".a.b", "yaxb") == True
+
+def test_matchhere_dollar():
+    assert match_here("$", "") == True
+    assert match_here("$", "bru") == False
+    assert match_here("a$", "") == False
+    assert match_here("a$", "ab") == False
+    assert match_here("a$", "ba") == True
+    assert match_here("a$", "ba cc") == False
