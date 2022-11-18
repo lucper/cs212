@@ -73,7 +73,7 @@ def match(pattern, text):
     if remainders:
         shortest = min(remainders, key=len)
         # !!!
-        return text[:-len(shortest)] is len(shortest) > 0 else text[0]
+        return text[:len(text)-len(shortest)]
 
 def search(pattern, text):
     for i in range(len(text)):
