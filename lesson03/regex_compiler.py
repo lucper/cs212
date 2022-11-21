@@ -2,6 +2,8 @@
 
 ## API for operators
 
+## See Lesson 3, video 18 ("Simple Compilers"), for some solutions
+
 #dot = ('dot',)
 #eol = ('eol',)
 
