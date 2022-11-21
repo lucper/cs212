@@ -57,11 +57,14 @@ def oneof(chars):
 #        raise ValueError(f'unknown pattern: {pattern}')
 
 def match(pattern, text):
-    """Match pattern against start of text; return longest if found or None otherwise"""
+    """Match pattern against start of text; return longest if found or None otherwise.
+    Notice that here the pattern is already "compiled"; we hard coded the corresponding
+    functions above. We could, however, write a function that compiles a pattern to its
+    function representation, but for this particular problem, there was no need for this
+    approach."""
     remainders = pattern(text)
     if remainders:
         shortest = min(remainders, key=len)
-        # !!!
         return text[:len(text)-len(shortest)]
 
 def search(pattern, text):
