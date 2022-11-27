@@ -9,36 +9,40 @@
 
 def lit(string):
     """ Literal """
-    return lambda text: set([text[len(string):]]) if text.startswith(string) else None
+    return lambda text: set([text[len(string):]]) if text.startswith(string) else set()
 
-def seq(lit1, lit2):
+def seq(x, y):
     """ Concatenation """
-    pass
+    return lambda text: set(t2 for t1 in x(text) for t2 in y(t1))
 
-def alt(lit1, lit2):
+def alt(x, y):
     """ | operator, e.g. 'a|b' matches either 'a' or 'b' """
-    pass
+    return lambda text: x(text) | y(text)
 
-def star(lit):
-    """ * operator """
-    pass
+def star(x):
+    """ * operator 
+    Notice that we make the union with the whole text
+    because it is always the remainder of itself.
+    In addition, calling star(x) returns the lambda;
+    this is how we can recur."""
+    return lambda text: set([text]) | set(t2 for t1 in x(text) for t2 in star(x)(t1))
 
-def plus(lit):
+def plus(x):
     """ + operator """
-    pass
+    return lambda text: set(t2 for t1 in x(text) for t2 in star(x)(t1))
 
-def opt(lit):
+def opt(x):
     """ ? operator """
     pass
 
 def oneof(chars):
-    pass
+    return lambda text: set([text[1:]]) if text and text[0] in chars else set()
 
 ## 
 
 #def matchset(pattern, text):
 #    op, x, y = components(pattern)
-#    if op == 'lit':
+#    if op == 'x':
 #        return set([text[len(x):]]) if text.startswith(x) else frozenset()
 #    elif op == 'seq':
 #        return set(t2 for t1 in matchset(x, text) for t2 in matchset(y, t1))
