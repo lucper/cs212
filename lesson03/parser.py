@@ -23,6 +23,7 @@ def parse(start_symbol, text, grammar):
             result.append(tree)
         return result, text
 
+    # can be memoized, but why?
     def parse_atom(atom, text):
         if atom in grammar:
             for alt in grammar[atom]:
