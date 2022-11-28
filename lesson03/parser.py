@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import re
+
 def grammar(description, whitespace=r"\s*"):
     G = {' ': whitespace}
     description = description.replace('\t', ' ') # no tabs
@@ -10,7 +12,29 @@ def grammar(description, whitespace=r"\s*"):
     return G
 
 def parse(start_symbol, text, grammar):
-    pass
+    tokenizer = grammar[' '] + '({})' # !!!
+
+    def parse_sequence(sequence, text):
+        result = []
+        for atom in sequence:
+            tree, text = parse_atom(atom, text)
+            if not text:
+                return None, None
+            result.append(tree)
+        return result, text
+
+    def parse_atom(atom, text):
+        if atom in grammar:
+            for alt in grammar[atom]:
+                tree, rem = parse_sequence(alt, text)
+                if not rem:
+                    return [atom] + tree, rem
+                return None, None
+        else:
+            m = re.match(tokenizer.format(atom), text)
+            return (None, None) if not m else (m.group(1), text[m.end():])
+
+    return parse_atom(start_symbol, text)
 
 G = grammar(r"""
 Exp     => Term [+-] Exp | Term
