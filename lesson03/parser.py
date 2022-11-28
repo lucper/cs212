@@ -4,7 +4,7 @@ def grammar(description, whitespace=r"\s*"):
     G = {' ': whitespace}
     description = description.replace('\t', ' ') # no tabs
     for line in description.strip().split("\n"):
-        lhs, rhs = line.split(" => ")
+        lhs, rhs = [x.strip() for x in line.split(" => ")]
         alternatives = rhs.split(" | ")
         G[lhs] = tuple(alt.split() for alt in alternatives)
     return G
