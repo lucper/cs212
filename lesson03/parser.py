@@ -1,15 +1,17 @@
 #!/usr/bin/env python
 
-# keys are left with wite spaces
-def grammar(description):
-    G = {}
+def grammar(description, whitespace=r"\s*"):
+    G = {' ': whitespace}
+    description = description.replace('\t', ' ') # no tabs
     for line in description.strip().split("\n"):
-        lhs, rhs = line.split("=>")
-        alternatives = rhs.split("|")
+        lhs, rhs = line.split(" => ")
+        alternatives = rhs.split(" | ")
         G[lhs] = tuple(alt.split() for alt in alternatives)
     return G
 
-# does not admit white spaces
+def parse(start_symbol, text, grammar):
+    pass
+
 G = grammar(r"""
 Exp     => Term [+-] Exp | Term
 Term    => Factor [*/] Term | Factor
@@ -19,3 +21,5 @@ Exps    => Exp [,] Exps | Exp
 Var     => [a-zA-Z_]\w*
 Num     => [+-]?[0-9]+([.][0-9]*)?
 """)
+
+print(G)
